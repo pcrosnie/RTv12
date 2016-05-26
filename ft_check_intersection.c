@@ -6,7 +6,7 @@
 /*   By: pcrosnie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 11:08:42 by pcrosnie          #+#    #+#             */
-/*   Updated: 2016/05/26 15:57:44 by pcrosnie         ###   ########.fr       */
+/*   Updated: 2016/05/26 16:32:05 by pcrosnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ double	ft_check_intersection(t_data *ptr, double rx, double ry, double rz)
 	int		elem; // 0 = rien 1 = Sphere, 2 = Mur, 3 = Cylindre 4 = cone
 	int		pos;
    	double	d;	// pos ds liste chainee;
-	
+	double a;
+
+	a = 0;
 	sph = ptr->sph;
 	elem = 0;
 	pos = 0;
@@ -71,10 +73,18 @@ double	ft_check_intersection(t_data *ptr, double rx, double ry, double rz)
 			ft_set_sphere_light(ptr, rx, ry, rz);
 			return (d);
 		}
+		else
+		{
+			ptr->red = 0;
+			ptr->blue = 255;
+			ptr->green = 0;
+			a = ft_set_wall(ptr, rx, ry, rz);
+			ft_set_light(ptr);
+			return (a);
+		}
 		pos++;
 		sph = sph->next;
 	}
-	//ft_set_wall(ptr, 
 	return (d);
 }
 
@@ -87,7 +97,6 @@ void	ft_set_rays(t_data *ptr, double x, double y)
 	rx = 600 - x;
 	ry = 600 - y;
 	rz = 1248;
-	
 	if (ft_check_intersection(ptr, rx, ry, rz) >= 0)
 	{
 		ft_draw(ptr, x, y);
