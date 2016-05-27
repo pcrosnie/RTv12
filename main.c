@@ -6,7 +6,7 @@
 /*   By: pcrosnie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 11:00:36 by pcrosnie          #+#    #+#             */
-/*   Updated: 2016/05/27 16:12:39 by pcrosnie         ###   ########.fr       */
+/*   Updated: 2016/05/27 16:44:17 by pcrosnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_set_obj(t_data *ptr)
 	ptr->wall->ax = 3;
 	ptr->wall->ay = 0;
 	ptr->wall->az = 5;
-	ptr->spot->posx = 0;
+	ptr->spot->posx = 20;
 	ptr->spot->posy = -100;
 	ptr->spot->posz = 50;
 	sph->cx = 0;

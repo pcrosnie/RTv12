@@ -6,7 +6,7 @@
 /*   By: pcrosnie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/26 14:51:34 by pcrosnie          #+#    #+#             */
-/*   Updated: 2016/05/27 16:22:29 by pcrosnie         ###   ########.fr       */
+/*   Updated: 2016/05/27 17:40:29 by pcrosnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,27 @@ void	ft_set_sphere_light(t_data *ptr, double rx, double ry, double rz)
 	}
 }
 
+void	ft_check_shadows(t_data *adr, double rx, double ry, double rz)
+{
+	t_spot *ptr;
+
+	ptr = adr->spot;
+	double b;
+	double d;
+
+	vector_normalize(&rx, &ry, &rz);
+	b = 2 * ((rx * (ptr->posx - adr->sph->cx) + (ry * (-ptr->posy - adr->sph->cy)) + (rz * (ptr->posz - adr->sph->cz))));
+	d = (b * b) - (4 * ((rx * rx) + (ry * ry) + (rz * rz)) * (((ptr->posx - adr->sph->cx) * (ptr->posx - adr->sph->cx)) + ((-ptr->posy - adr->sph->cy) * (-ptr->posy - adr->sph->cy)) + ((ptr->posz - adr->sph->cz) * (ptr->posz - adr->sph->cz)) - (adr->sph->rayon * adr->sph->rayon)));
+	if (d >= 0)
+		adr->blue = 50;
+	
+}
 
 void	ft_set_light(t_data *ptr, double rx, double ry, double rz)
 {
 	t_spot *spot;
 	double	coeff;
-	double	t;
+	double	t; 
 	double	t2;
 	
 	spot = ptr->spot;
@@ -48,9 +63,8 @@ void	ft_set_light(t_data *ptr, double rx, double ry, double rz)
 	ptr->spot->distance_max = sqrt(((spot->posx - (spot->posx + (ptr->wall->nx * t))) * (spot->posx - (spot->posx + (ptr->wall->nx * t)))) + ((spot->posy - (spot->posy + (ptr->wall->ny * t))) * (spot->posy - (spot->posy + (ptr->wall->ny * t)))) + ((spot->posz - (spot->posz + (ptr->wall->nz * t))) * (spot->posz - (spot->posz + (ptr->wall->nz * t)))));
 	t2 = -(ptr->wall->nx + ptr->wall->ny + (ptr->wall->nz)) / ((ptr->wall->nx * rx) + (ptr->wall->ny * ry) + (ptr->wall->nz * rz));
 	coeff = sqrt(((ptr->spot->posx - (rx * t2)) * (ptr->spot->posx - (rx * t2))) + ((ptr->spot->posy - (ry *t2)) * (ptr->spot->posy - (ry * t2))) + ((ptr->spot->posz - (rz * t2)) * (ptr->spot->posz - (rz * t2))));
-//	printf("%f\n", coeff);
+	printf("%f\n", (rx * t2));
 	ptr->blue = coeff * 10 - 950;
-	printf("%f\n", t2);
 	if (ptr->blue > 255 || t2 > 65)
 	{
 		ptr->blue = 0;
@@ -61,4 +75,5 @@ void	ft_set_light(t_data *ptr, double rx, double ry, double rz)
 		ptr->blue = 0;
 //		ptr->red = 0;
 	}
+	ft_check_shadows(ptr, (rx * t2) - spot->posx, (ry * t2) + spot->posy, (rz * t2) - spot->posz);
 }
