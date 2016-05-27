@@ -6,7 +6,7 @@
 /*   By: pcrosnie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/27 14:10:44 by pcrosnie          #+#    #+#             */
-/*   Updated: 2016/05/26 16:29:44 by pcrosnie         ###   ########.fr       */
+/*   Updated: 2016/05/27 11:06:10 by pcrosnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ typedef struct	s_cyl
 	double	rayon;
 }		t_cyl;
 
-void	ft_set_light(t_data *ptr);
+void	ft_set_light(t_data *ptr, double rx, double ry, double rz);
 void	ft_set_sphere_light(t_data *ptr, double rx, double ry, double rz);
 double	ft_set_wall(t_data *ptr, double rx, double ry, double rz);
 void	ft_pixel_test(t_data *ptr);

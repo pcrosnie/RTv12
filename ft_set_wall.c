@@ -6,7 +6,7 @@
 /*   By: pcrosnie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/26 14:18:22 by pcrosnie          #+#    #+#             */
-/*   Updated: 2016/05/26 16:32:56 by pcrosnie         ###   ########.fr       */
+/*   Updated: 2016/05/27 11:31:47 by pcrosnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ double	ft_set_wall(t_data *ptr, double rx, double ry, double rz)
 	b = (ptr->wall->nx * rx) + (ptr->wall->ny * ry) + (ptr->wall->nz * rz);
 	t = a / b;
 	ptr->spot->sol = t;
-	printf("%f\n", t);
+//	printf("%f\n", t);
 	return (t);
 }

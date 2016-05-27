@@ -6,7 +6,7 @@
 /*   By: pcrosnie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 11:08:42 by pcrosnie          #+#    #+#             */
-/*   Updated: 2016/05/26 16:32:05 by pcrosnie         ###   ########.fr       */
+/*   Updated: 2016/05/27 14:08:30 by pcrosnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,23 @@ double	ft_check_intersection(t_data *ptr, double rx, double ry, double rz)
 			ptr->blue = 255;
 			ptr->green = 0;
 			a = ft_set_wall(ptr, rx, ry, rz);
-			ft_set_light(ptr);
+			ft_set_light(ptr, rx, ry, rz);
 			return (a);
 		}
 		pos++;
 		sph = sph->next;
 	}
 	return (d);
+}
+
+void    vector_normalize(double *rx, double *ry, double *rz)
+{
+	int		mod;
+
+	mod = sqrt((*rx * *rx) + (*ry * *ry) + (*rz * *rz));
+	*rx /= mod;
+	*ry /= mod;
+	*rz /= mod;
 }
 
 void	ft_set_rays(t_data *ptr, double x, double y)
@@ -97,6 +107,7 @@ void	ft_set_rays(t_data *ptr, double x, double y)
 	rx = 600 - x;
 	ry = 600 - y;
 	rz = 1248;
+	vector_normalize(&rx, &ry, &rz);
 	if (ft_check_intersection(ptr, rx, ry, rz) >= 0)
 	{
 		ft_draw(ptr, x, y);
