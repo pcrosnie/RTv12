@@ -6,7 +6,7 @@
 /*   By: pcrosnie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 11:08:42 by pcrosnie          #+#    #+#             */
-/*   Updated: 2016/05/27 16:46:54 by pcrosnie         ###   ########.fr       */
+/*   Updated: 2016/06/02 11:40:04 by pcrosnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ double  ft_solve_poly(t_data *ptr, double rx, double ry, double rz)
 	double  b;
 	double  sol1;
 	double  sol2;
-	ptr->spot->sol = 0;
 		b = 2 * ((rx * (ptr->posx - ptr->sph->cx) + (ry * (ptr->posy - ptr->sph->cy)) + (rz * (ptr->posz - ptr->sph->cz)
 						)));
 		        d = (b * b) - (4 * ((rx * rx) + (ry * ry) + (rz * rz))) * (((ptr->posx - ptr->sph->cx) * (ptr->posx - ptr->sph->
@@ -35,12 +34,17 @@ double  ft_solve_poly(t_data *ptr, double rx, double ry, double rz)
 		sol2 = ((b * (-1)) + sqrt(d)) / (2 * ((rx * rx) + (ry * ry) + (rz * rz)));
 		if (sol1 > sol2)
 		{
+//			printf("%f : %f\n", sol1, ptr->spot->sol);
+//			if (ptr->spot->sol < sol1 - 1 && ptr->spot->sol > 0)
+//				return (-1);
 			ptr->spot->sol = sol1;
 			if (ptr->distance < sol1 && ptr->distance != 0)
 				return (-1);
 		}
 		else
 		{
+//			if (ptr->spot->sol < sol2 - 1 && ptr->spot->sol > 0)
+//				return (-1);
 			ptr->spot->sol = sol2;
 			if (ptr->distance < sol2 && ptr->distance != 0)
 				return (-1);
@@ -62,26 +66,25 @@ double	ft_check_intersection(t_data *ptr, double rx, double ry, double rz)
 	elem = 0;
 	pos = 0;
 	d = 0;
+	ptr->spot->sol = 0;
 	while (sph != NULL)
 	{
+			ptr->red = 0;
+			ptr->blue = 255;
+			ptr->green = 0;
+			a = ft_set_wall(ptr, rx, ry, rz);
+			ft_set_light(ptr, rx, ry, rz);
 		d = ft_solve_poly(ptr, rx, ry, rz);
 		if (d >= 0)
 		{
 			ptr->red = 255;
 			ptr->blue = 0;
 			ptr->green = 0;
-			ft_set_sphere_light(ptr, rx, ry, rz);
-			return (d);
+			ft_set_sphere_light(ptr, -rx, ry, rz);
+//			return (d);
 		}
 		else
-		{
-			ptr->red = 0;
-			ptr->blue = 255;
-			ptr->green = 0;
-			a = ft_set_wall(ptr, rx, ry, rz);
-			ft_set_light(ptr, rx, ry, rz);
 			return (a);
-		}
 		pos++;
 		sph = sph->next;
 	}
@@ -106,7 +109,7 @@ void	ft_set_rays(t_data *ptr, double x, double y)
 
 	rx = 600 - x;
 	ry = 600 - y;
-	rz = 1248;
+	rz = 2000;
 	vector_normalize(&rx, &ry, &rz);
 	if (ft_check_intersection(ptr, rx, ry, rz) >= 0)
 	{
